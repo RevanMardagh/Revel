@@ -33,6 +33,8 @@ class LogAnalyzerApp(QMainWindow):
         self.sidebar.addItem("📊 Statistics")  # NEW
         self.sidebar.addItem("🤖 AI Overview")  # this will be index 3
 
+
+
         self.sidebar.setFixedWidth(200)
         self.sidebar.setStyleSheet("""
             QListWidget {
@@ -67,18 +69,11 @@ class LogAnalyzerApp(QMainWindow):
         # Wrap on_file_selected to also display data on next page
         def wrapped_file_selected(file_path):
             if on_file_selected:
-                results = on_file_selected(file_path)  # now a dict
-                # results looks like:
-                # {
-                #   "file_path": file_path,
-                #   "parsed_data": [...],
-                #   "log_stats": {...},
-                #   "ip_stats": {...}
-                # }
+                results = on_file_selected(file_path, ai_page=self.ai_page)  # PASS ai_page instance
 
-                # Send data to pages
-                self.next_page.set_data(results["parsed_data"])  # Overview page
-                self.stats_page.set_stats(results["log_stats"], results["ip_stats"])  # Statistics page
+                self.next_page.set_data(results["parsed_data"])
+                self.stats_page.set_stats(results["log_stats"], results["ip_stats"])
+                # AI page will update itself via signal
             else:
                 results = {"file_path": file_path}
                 self.next_page.set_data(results)
