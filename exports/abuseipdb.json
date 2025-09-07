@@ -1,0 +1,40 @@
+{
+    "14.103.172.199": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "CN",
+        "date": "2025-09-07T14:53:29+00:00",
+        "domain": "bytedance.com",
+        "hostnames": [],
+        "ipAddress": "14.103.172.199",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Beijing Volcano Engine Technology Co., Ltd.",
+        "lastReportedAt": "2025-09-07T14:41:21+00:00",
+        "numDistinctUsers": 414,
+        "totalReports": 1357,
+        "url": "https://www.abuseipdb.com/check/14.103.172.199",
+        "usageType": "Fixed Line ISP"
+    },
+    "18.237.3.202": {
+        "abuseConfidenceScore": 94,
+        "countryCode": "US",
+        "date": "2025-09-07T14:53:29+00:00",
+        "domain": "amazon.com",
+        "hostnames": [
+            "ec2-18-237-3-202.us-west-2.compute.amazonaws.com"
+        ],
+        "ipAddress": "18.237.3.202",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Amazon.com, Inc.",
+        "lastReportedAt": "2025-08-17T20:08:55+00:00",
+        "numDistinctUsers": 36,
+        "totalReports": 38,
+        "url": "https://www.abuseipdb.com/check/18.237.3.202",
+        "usageType": "Data Center/Web Hosting/Transit"
+    }
+}

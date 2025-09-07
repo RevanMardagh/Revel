@@ -1,28 +1,60 @@
 import vt
 from abuseipdb_wrapper import AbuseIPDB
 from definitions import ROOT_DIR
+from mylibs.settings import load_settings
 
+# Load settings
+settings = load_settings()
 
 # --- AbuseIPDB function ---
+from abuseipdb_wrapper import AbuseIPDB
+from definitions import ROOT_DIR
+from mylibs.settings import load_settings
+
+# Load settings
+settings = load_settings()
+
+from abuseipdb_wrapper import AbuseIPDB
+from definitions import ROOT_DIR
+from mylibs.settings import load_settings
+
+settings = load_settings()
+
 def get_abuseipdb_scores(ips, api_key=None):
     """
     Returns a dictionary of IPs to their abuseConfidenceScore from AbuseIPDB.
-    { ip: score }
+    Returns -1 if the API call fails (including invalid API key).
     """
     if api_key is None:
-        api_key = "ffc53215145b0aaddec3be4138ec4468e4fd57c20ee6f66d583bb00f45030ea81aef5d1b34c95530"
-
-    abuse = AbuseIPDB(api_key=api_key, db_file=f'{ROOT_DIR}/exports/abuseipdb.json')
-    abuse.add_ip_list(ips)
-    abuse.check()
+        api_key = settings.get("abuseipdb_key", "")
 
     abuse_scores = {}
-    db_data = abuse.get_db()
-    for ip in ips:
-        score = db_data.get(ip, {}).get("abuseConfidenceScore", 0)
-        abuse_scores[ip] = score
+    try:
+        abuse = AbuseIPDB(api_key=api_key, db_file=f'{ROOT_DIR}/exports/abuseipdb.json')
+        abuse.add_ip_list(ips)
+        abuse.check()
+
+        db_data = abuse.get_db()
+
+        # If the db_data doesn't contain any of our IPs, assume API failure
+        if not any(ip in db_data for ip in ips):
+            print("AbuseIPDB API likely failed (check results missing)")
+            for ip in ips:
+                abuse_scores[ip] = -1
+            return abuse_scores
+
+        # Otherwise, return scores normally
+        for ip in ips:
+            score = db_data.get(ip, {}).get("abuseConfidenceScore", -1)
+            abuse_scores[ip] = score
+
+    except Exception as e:
+        print("AbuseIPDB unexpected exception:", e)
+        for ip in ips:
+            abuse_scores[ip] = -1
 
     return abuse_scores
+
 
 
 # --- VirusTotal function ---
@@ -32,7 +64,7 @@ def get_virustotal_flags(ips, api_key=None):
     { ip: flagged_count }
     """
     if api_key is None:
-        api_key = "6959c5e658d3ec7fea72475347b4b8025c4a8de00767317f2e0e8c1978f0bab4"
+        api_key = settings.get("virustotal_key", "")
 
     client = vt.Client(api_key)
     vt_scores = {}
@@ -61,7 +93,9 @@ def check_ip_reputation_levels(ips):
     results = {}
 
     for ip, score in abuse_scores.items():
-        if score <= 3:
+        if score == -1:
+            results[ip] = "Unknown"
+        elif score <= 3:
             results[ip] = "Safe"
         elif score < 20:
             results[ip] = "Low Risk"
@@ -69,9 +103,10 @@ def check_ip_reputation_levels(ips):
             results[ip] = "Medium Risk"
         elif score < 80:
             results[ip] = "High Risk"
-        else:
+        elif score > 80:
             results[ip] = "Malicious"
-    # print(results)
+
+    print(results)
     return results
 
 
