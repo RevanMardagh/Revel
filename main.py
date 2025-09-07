@@ -1,13 +1,16 @@
-from mylibs import parser
-from mylibs.select_file import get_file
+# main.py
 from gui.gui import run_gui
-"""
-if __name__ == '__main__':
-    # filepath = get_file()
-    filepath = "logs/new_log.txt"
-    parsed_data = parser.parser(filepath)
+from mylibs.parser import parser  # your parse function
 
-    print(parsed_data)
-"""
 
-run_gui()
+def on_file_selected(file_path):
+    print("File selected:", file_path)
+    # Call your parser function
+    data = parser(file_path)
+    # For now, just print data; later you can send it to the next page
+    # print("Parsed data:", data[0].items())
+    return data
+
+
+# Run the GUI and pass the callback
+run_gui(on_file_selected=on_file_selected)
