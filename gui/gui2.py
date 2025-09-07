@@ -3,7 +3,6 @@ from PyQt6.QtGui import QGuiApplication
 from gui.file_page import FilePage
 from gui.list_page import NextPage
 from gui.stats_page import StatsPage
-from gui.ai_page import AIPage
 
 class LogAnalyzerApp(QMainWindow):
     def __init__(self, on_file_selected=None):
@@ -30,10 +29,7 @@ class LogAnalyzerApp(QMainWindow):
         self.sidebar = QListWidget()
         self.sidebar.addItem("📂 File")
         self.sidebar.addItem("📄 Overview")
-        self.sidebar.addItem("📊 Statistics")  # NEW
-        self.sidebar.addItem("🤖 AI Overview")  # this will be index 3
-
-        self.sidebar.setFixedWidth(200)
+        self.sidebar.setFixedWidth(180)
         self.sidebar.setStyleSheet("""
             QListWidget {
                 background-color: #2c3e50;
@@ -57,45 +53,32 @@ class LogAnalyzerApp(QMainWindow):
         """)
         main_layout.addWidget(self.sidebar)
 
-        # Pages (stacked widgets)
+        # Pages
         self.stack = QStackedWidget()
 
         self.next_page = NextPage()
         self.stats_page = StatsPage()
-        self.ai_page = AIPage()
+
 
         # Wrap on_file_selected to also display data on next page
         def wrapped_file_selected(file_path):
             if on_file_selected:
-                results = on_file_selected(file_path)  # now a dict
-                # results looks like:
-                # {
-                #   "file_path": file_path,
-                #   "parsed_data": [...],
-                #   "log_stats": {...},
-                #   "ip_stats": {...}
-                # }
-
-                # Send data to pages
-                self.next_page.set_data(results["parsed_data"])  # Overview page
-                self.stats_page.set_stats(results["log_stats"], results["ip_stats"])  # Statistics page
+                data = on_file_selected(file_path)
             else:
-                results = {"file_path": file_path}
-                self.next_page.set_data(results)
-
-            self.sidebar.setCurrentRow(1)  # switch to overview page
+                data = f"File selected: {file_path}"
+            self.next_page.set_data(data)
+            self.sidebar.setCurrentRow(1)  # switch to next page
 
         self.file_page = FilePage(parent=self, on_file_selected=wrapped_file_selected)
 
-        # Add pages to stack
-        self.stack.addWidget(self.file_page)   # index 0
-        self.stack.addWidget(self.next_page)   # index 1
-        self.stack.addWidget(self.stats_page)  # index 2
-        self.stack.addWidget(self.ai_page)     # index 3
+        # Show pages
+
+        self.stack.addWidget(self.file_page)
+        self.stack.addWidget(self.next_page)
+        self.pages.addWidget(self.stats_page)
 
         main_layout.addWidget(self.stack)
 
-        # Sidebar navigation
         self.sidebar.currentRowChanged.connect(self.display_page)
         self.sidebar.setCurrentRow(0)
 

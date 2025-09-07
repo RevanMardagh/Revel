@@ -3,7 +3,7 @@ from PyQt6.QtGui import QGuiApplication
 from gui.file_page import FilePage
 from gui.list_page import NextPage
 from gui.stats_page import StatsPage
-from gui.ai_page import AIPage
+
 
 class LogAnalyzerApp(QMainWindow):
     def __init__(self, on_file_selected=None):
@@ -31,8 +31,6 @@ class LogAnalyzerApp(QMainWindow):
         self.sidebar.addItem("📂 File")
         self.sidebar.addItem("📄 Overview")
         self.sidebar.addItem("📊 Statistics")  # NEW
-        self.sidebar.addItem("🤖 AI Overview")  # this will be index 3
-
         self.sidebar.setFixedWidth(200)
         self.sidebar.setStyleSheet("""
             QListWidget {
@@ -62,27 +60,14 @@ class LogAnalyzerApp(QMainWindow):
 
         self.next_page = NextPage()
         self.stats_page = StatsPage()
-        self.ai_page = AIPage()
 
         # Wrap on_file_selected to also display data on next page
         def wrapped_file_selected(file_path):
             if on_file_selected:
-                results = on_file_selected(file_path)  # now a dict
-                # results looks like:
-                # {
-                #   "file_path": file_path,
-                #   "parsed_data": [...],
-                #   "log_stats": {...},
-                #   "ip_stats": {...}
-                # }
-
-                # Send data to pages
-                self.next_page.set_data(results["parsed_data"])  # Overview page
-                self.stats_page.set_stats(results["log_stats"], results["ip_stats"])  # Statistics page
+                data = on_file_selected(file_path)
             else:
-                results = {"file_path": file_path}
-                self.next_page.set_data(results)
-
+                data = f"File selected: {file_path}"
+            self.next_page.set_data(data)
             self.sidebar.setCurrentRow(1)  # switch to overview page
 
         self.file_page = FilePage(parent=self, on_file_selected=wrapped_file_selected)
@@ -91,7 +76,6 @@ class LogAnalyzerApp(QMainWindow):
         self.stack.addWidget(self.file_page)   # index 0
         self.stack.addWidget(self.next_page)   # index 1
         self.stack.addWidget(self.stats_page)  # index 2
-        self.stack.addWidget(self.ai_page)     # index 3
 
         main_layout.addWidget(self.stack)
 
