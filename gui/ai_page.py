@@ -39,3 +39,7 @@ class AIPage(QWidget):
     def show_loading(self):
         """Show loading message."""
         self.info_text.setPlainText("Generating AI overview… Please wait…")
+
+    def show_unchecked(self):
+        """Show unchecked message."""
+        self.info_text.setPlainText("You've disabled AI overview. Run the program again if you want AI to review the log file")
