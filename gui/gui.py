@@ -1,17 +1,25 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QListWidget, QStackedWidget, QHBoxLayout, QWidget
-from PyQt6.QtGui import QGuiApplication
+from PyQt6.QtGui import QGuiApplication, QIcon
 from PyQt6.QtCore import Qt
 from gui.file_page import FilePage
 from gui.list_page import NextPage
 from gui.stats_page import StatsPage
 from gui.ai_page import AIPage
+from gui.exports_page import ExportsPage
 from mylibs.settings import load_settings
-
+import os
 
 class LogAnalyzerApp(QMainWindow):
     def __init__(self, on_file_selected=None):
         super().__init__()
         self.setWindowTitle("Revel Log Analyzer")
+
+        # --- Set the window icon ---
+        icon_path = os.path.join("assets", "icon.png")  # path to your icon file
+        if os.path.exists(icon_path):
+            self.setWindowIcon(QIcon(icon_path))
+        else:
+            print(f"⚠️ Icon file not found: {icon_path}")
 
         # Set default size
         self.resize(1600, 1200)
@@ -37,6 +45,7 @@ class LogAnalyzerApp(QMainWindow):
         self.sidebar.addItem("📄 Overview")
         self.sidebar.addItem("📊 Statistics")
         self.sidebar.addItem("🤖 AI Overview")
+        self.sidebar.addItem("💾 Export")
 
 
         self.sidebar.setFixedWidth(200)
@@ -68,12 +77,18 @@ class LogAnalyzerApp(QMainWindow):
         self.next_page = NextPage()
         self.stats_page = StatsPage()
         self.ai_page = AIPage()
+        self.exports_page = ExportsPage() # start with empty data
 
         def wrapped_file_selected(file_path):
             if on_file_selected:
-                results = on_file_selected(file_path, ai_page=self.ai_page)
+                results = on_file_selected(
+                    file_path,
+                    ai_page=self.ai_page,
+                    exports_page=self.exports_page  # pass the exports page
+                )
                 self.next_page.set_data(results["parsed_data"])
                 self.stats_page.set_stats(results["log_stats"], results["ip_stats"])
+
             self.sidebar.setCurrentRow(1)
 
         self.file_page = FilePage(parent=self, on_file_selected=wrapped_file_selected)
@@ -82,14 +97,18 @@ class LogAnalyzerApp(QMainWindow):
         self.stack.addWidget(self.next_page)   # index 1
         self.stack.addWidget(self.stats_page)  # index 2
         self.stack.addWidget(self.ai_page)     # index 3
+        self.stack.addWidget(self.exports_page)  # index 4
         main_layout.addWidget(self.stack)
+
 
         # Sidebar navigation
         self.sidebar.currentRowChanged.connect(self.display_page)
         self.sidebar.setCurrentRow(0)
 
+
     def display_page(self, index):
         self.stack.setCurrentIndex(index)
+
 
 
 def run_gui(on_file_selected=None):

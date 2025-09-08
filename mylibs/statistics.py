@@ -1,34 +1,39 @@
 from collections import Counter, defaultdict
-from mylibs.parser import parser
-
-from more_itertools.recipes import unique
-
-
-from collections import Counter, defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from api.query_apis import get_ip_report, check_ip_reputation_levels
 
 def ip_statistics(logs):
-    """
-    Analyze logs by remote_addr:
-      - Count of each status code
-      - Total requests
-      - 4xx error ratio (as 'X/Y')
-      - Raw ip_counts (total requests per IP)
-      - User-Agent counts per IP
-    """
     status_counts = defaultdict(Counter)
     ip_counts = Counter(entry["remote_addr"] for entry in logs)
-    ua_counts = defaultdict(Counter)  # store user-agent counts per IP
+    ua_counts = defaultdict(Counter)
 
-    # Count statuses and user-agents per IP
     for log in logs:
         addr = log["remote_addr"]
         status = log["status"]
-        ua = log.get("user_agent", "Unknown")  # fallback if field missing
-
+        ua = log.get("user_agent", "Unknown")
         status_counts[addr][status] += 1
         ua_counts[addr][ua] += 1
 
-    # Prepare results
+    # Pull IP reports in parallel
+    ip_list = list(ip_counts.keys())
+
+    # --- get reputation levels ---
+    reputation = check_ip_reputation_levels(ip_list)  # returns {'ip': 'Malicious', ...}
+
+    # --- get detailed reports from VT & AbuseIPDB ---
+    reports = {}
+    def fetch_report(ip):
+        try:
+            return ip, get_ip_report([ip]).get(ip, {})
+        except Exception:
+            return ip, {}
+
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        future_to_ip = {executor.submit(fetch_report, ip): ip for ip in ip_list}
+        for future in as_completed(future_to_ip):
+            ip, report = future.result()
+            reports[ip] = report
+
     results = {}
     for addr, counts in status_counts.items():
         total = sum(counts.values())
@@ -36,18 +41,35 @@ def ip_statistics(logs):
         ratio_str = f"{errors_4xx}/{total} ({errors_4xx/total:.2%})"
 
         sorted_status_counts = dict(sorted(counts.items(), key=lambda x: x[0]))
-        sorted_ua_counts = dict(ua_counts[addr].items(), key=lambda x: x[1], reverse=True)
+        sorted_ua_counts = dict(sorted(ua_counts[addr].items(), key=lambda x: x[1], reverse=True))
 
+        vt_data = reports.get(addr, {}).get("virustotal", {})
+        if vt_data:
+            total_flags = sum(vt_data.values())
+            malicious_flags = vt_data.get("malicious", 0)
+            suspicious_flags = vt_data.get("suspicious", 0)
+            if total_flags > 0:
+                vt_formatted = f"Total: {total_flags}, Malicious: {malicious_flags}, Suspicious: {suspicious_flags}"
+            else:
+                vt_formatted = f"Virustotal API Quota exceeded"
+        else:
+            vt_formatted = "N/A"
+
+        abuse_score = reports.get(addr, {}).get("abuseipdb", "N/A")
+
+        # --- merge reputation ---
         results[addr] = {
             "status_counts": sorted_status_counts,
             "total_requests": total,
             "4xx_ratio": ratio_str,
             "ip_count": ip_counts[addr],
-            "user_agents": sorted_ua_counts  # add user-agent info
+            "user_agents": sorted_ua_counts,
+            "virustotal": vt_formatted,
+            "abuseipdb": abuse_score,
+            "reputation": reputation.get(addr, "Unknown")  # <--- new field
         }
-    print(results)
-    return results
 
+    return results
 
 
 
@@ -85,5 +107,5 @@ def log_statistics(parsed_data):
 if __name__ == "__main__":
     import parser
     dat = parser.parser("../logs/new_log.txt")
-    # ip_statistics(dat)
-    log_stats, ip_stats = log_statistics(dat)
+    ip_statistics(dat)
+    # log_stats, ip_stats = log_statistics(dat)

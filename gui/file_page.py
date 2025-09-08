@@ -6,6 +6,9 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, QTimer
 from pathlib import Path
 from mylibs.settings import load_settings, save_settings
+import sys
+import os
+import subprocess
 
 
 class FilePage(QWidget):
@@ -16,6 +19,20 @@ class FilePage(QWidget):
 
         # Load settings
         self.settings = load_settings()
+
+        # # Top-right reload button
+        # reload_btn = QPushButton("🔄 Reload App")
+        # reload_btn.setFixedSize(140, 35)
+        # reload_btn.setStyleSheet(self.button_style("#e74c3c", "#c0392b"))
+        # reload_btn.clicked.connect(self.reload_app)
+        #
+        # # Add to a horizontal layout to push it to the right
+        # top_row = QHBoxLayout()
+        # top_row.addStretch()
+        # top_row.addWidget(reload_btn)
+        # self.setLayout(QVBoxLayout())  # wrap outer layout with new top_row
+        # self.layout().addLayout(top_row)
+        # self.layout().addLayout(outer_layout)
 
         # Outer layout
         outer_layout = QVBoxLayout()
@@ -98,6 +115,16 @@ class FilePage(QWidget):
         self.save_btn.clicked.connect(self.save_settings)
         save_layout.addWidget(self.save_btn)
 
+
+        # # Inside __init__ after self.save_btn
+        # self.apply_btn = QPushButton("Apply Settings")
+        # self.apply_btn.setFixedSize(180, 45)
+        # self.apply_btn.setStyleSheet(self.button_style("#f39c12", "#d35400"))
+        # self.apply_btn.clicked.connect(self.apply_settings)
+        # save_layout.addWidget(self.apply_btn)
+
+
+
         form_layout.addRow(save_layout)
 
         settings_group.setLayout(form_layout)
@@ -156,6 +183,18 @@ class FilePage(QWidget):
             }}
         """
 
+    # def reload_app(self):
+    #     """
+    #     Fully restart the application.
+    #     """
+    #     python = sys.executable
+    #     script = sys.argv[0]
+    #     print("Reloading app...")
+    #     # Launch a new process running this same script
+    #     subprocess.Popen([python, script] + sys.argv[1:])
+    #     # Exit current process
+    #     sys.exit(0)
+
     # === File Handlers ===
     def browse_file(self):
         file_dialog, _ = QFileDialog.getOpenFileName(
@@ -179,25 +218,23 @@ class FilePage(QWidget):
 
     def select_file(self):
         log_file = self.file_input.text().strip()
-        if log_file and Path(log_file).is_file() and self.on_file_selected:
-            self.on_file_selected(log_file)
+        if log_file and Path(log_file).is_file():
+            # Save last_file in settings
+            self.settings["last_file"] = log_file
+            save_settings(self.settings)
+            self.settings = load_settings()  # reload to apply
+
+            # Update parent selected_file
             if self.parent:
                 self.parent.selected_file = log_file
-                # Save last_file in settings
-                self.settings["last_file"] = log_file
-                save_settings(self.settings)
 
-                # Reload settings to make sure updates are applied
-                self.settings = load_settings()
+                # Automatically go to the next page (e.g., stats page)
+                if hasattr(self.parent, "sidebar"):
+                    self.parent.sidebar.setCurrentRow(1)  # index of next page
 
-                # Call the callback
-                if self.on_file_selected:
-                    self.on_file_selected(log_file)
-
-                if self.parent:
-                    self.parent.selected_file = log_file
-                    self.parent.sidebar.setCurrentRow(1)
-
+            # Call the callback
+            if self.on_file_selected:
+                self.on_file_selected(log_file)
 
     # === Settings Handlers ===
     def save_settings(self):
@@ -210,3 +247,22 @@ class FilePage(QWidget):
         # Show saved indicator for 2 seconds
         self.saved_label.setVisible(True)
         QTimer.singleShot(2000, lambda: self.saved_label.setVisible(False))
+
+    #
+    # def apply_settings(self):
+    #     """
+    #     Reload settings, save changes, and re-run current log file to refresh stats & AI overview.
+    #     """
+    #     # First save current inputs
+    #     self.save_settings()
+    #
+    #     # Reload settings from disk
+    #     self.settings = load_settings()
+    #
+    #     # Re-run the last selected file if exists
+    #     last_file = self.settings.get("last_file", "")
+    #     if last_file and Path(last_file).is_file() and self.on_file_selected:
+    #         print("Applying settings and reloading file:", last_file)
+    #         # Pass the parent.ai_page if needed
+    #         ai_page = getattr(self.parent, "ai_page", None)
+    #         self.on_file_selected(last_file, ai_page=ai_page)

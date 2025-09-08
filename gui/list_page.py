@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QLabel, QLineEdit, QTableView,
-    QProgressBar, QApplication, QHBoxLayout, QComboBox
+    QProgressBar, QApplication, QHBoxLayout, QComboBox, QHeaderView
 )
 from PyQt6.QtCore import Qt, QSortFilterProxyModel, QThread, pyqtSignal
 from PyQt6.QtGui import QStandardItemModel, QStandardItem, QColor
@@ -25,19 +25,19 @@ class MultiFilterProxyModel(QSortFilterProxyModel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.search_text = ""
-        self.status_filter = "All Status"
-        self.reputation_filter = "All Reputation"
+        self.status_filter = "All Statuses"
+        self.reputation_filter = "All Reputations"
 
     def set_search_text(self, text: str):
         self.search_text = text or ""
         self.invalidateFilter()
 
     def set_status_filter(self, text: str):
-        self.status_filter = text or "All Status"
+        self.status_filter = text or "All Statuses"
         self.invalidateFilter()
 
     def set_reputation_filter(self, text: str):
-        self.reputation_filter = text or "All Reputation"
+        self.reputation_filter = text or "All Reputations"
         self.invalidateFilter()
 
     def filterAcceptsRow(self, source_row: int, source_parent) -> bool:
@@ -197,6 +197,14 @@ class NextPage(QWidget):
 
         # Resize columns for readability
         for col in [0, 1, 2, 4, 5, 6]:
+            self.table.resizeColumnToContents(col)
+
+        # After creating the table and setting the model
+        self.table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)  # URI
+        self.table.horizontalHeader().setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)  # User Agent
+
+        # Optional: keep other columns resize-to-contents
+        for col in [0, 1, 2, 4, 6]:
             self.table.resizeColumnToContents(col)
 
         # Update progress bar and start reputation thread

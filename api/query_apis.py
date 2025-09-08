@@ -2,6 +2,7 @@ import vt
 from abuseipdb_wrapper import AbuseIPDB
 from definitions import ROOT_DIR
 from mylibs.settings import load_settings
+import os
 
 # Load settings
 settings = load_settings()
@@ -30,11 +31,11 @@ def get_abuseipdb_scores(ips, api_key=None):
 
     abuse_scores = {}
     try:
-        abuse = AbuseIPDB(api_key=api_key, db_file=f'{ROOT_DIR}/exports/abuseipdb.json')
+        abuse = AbuseIPDB(api_key=api_key, db_file=os.path.join(ROOT_DIR, "exports", "abuseipdb.json"))
         abuse.add_ip_list(ips)
         abuse.check()
-
         db_data = abuse.get_db()
+
 
         # If the db_data doesn't contain any of our IPs, assume API failure
         if not any(ip in db_data for ip in ips):
@@ -59,12 +60,9 @@ def get_abuseipdb_scores(ips, api_key=None):
 
 # --- VirusTotal function ---
 def get_virustotal_flags(ips, api_key=None):
-    """
-    Returns a dictionary of IPs to number of engines flagging them as malicious or suspicious.
-    { ip: flagged_count }
-    """
-    if api_key is None:
-        api_key = settings.get("virustotal_key", "")
+    api_key = settings.get("virustotal_key")
+    if not api_key:  # catches None or empty string
+        api_key = "fd336c37705badcf8f1a3c69821aaf6c3b744d2e167e6bddc89da6927b2cecb0"
 
     client = vt.Client(api_key)
     vt_scores = {}
@@ -72,14 +70,19 @@ def get_virustotal_flags(ips, api_key=None):
     for ip in ips:
         try:
             ip_obj = client.get_object(f"/ip_addresses/{ip}")
-            mal = ip_obj.last_analysis_stats.get("malicious", 0)
-            sus = ip_obj.last_analysis_stats.get("suspicious", 0)
-            vt_scores[ip] = mal + sus
-        except Exception:
-            vt_scores[ip] = 0
+            stats = ip_obj.last_analysis_stats
+            vt_scores[ip] = {
+                "malicious": stats.get("malicious", 0),
+                "suspicious": stats.get("suspicious", 0),
+                "total": sum(stats.values())
+            }
+        except vt.APIError as e:
+            print(f"Error checking {ip}: {e}")
+            vt_scores[ip] = {"malicious": 0, "suspicious": 0, "total": 0}
 
     client.close()
     return vt_scores
+
 
 
 # --- Risk level function using only AbuseIPDB ---
@@ -109,14 +112,32 @@ def check_ip_reputation_levels(ips):
     print(results)
     return results
 
+# Get the reports from Virustotal and AbuseIPDB
+def get_ip_report(ips):
+    """
+    Returns a dict mapping IPs to:
+    { ip: {"virustotal": {...}, "abuseipdb": ...} }
+    """
+    abuse_scores = get_abuseipdb_scores(ips)    # expected: {ip: score}
+    virustotal_flags = get_virustotal_flags(ips)  # expected: {ip: {malicious, suspicious, total}}
+
+    combined = {}
+    for ip in ips:
+        combined[ip] = {
+            "virustotal": virustotal_flags.get(ip, {}),
+            "abuseipdb": abuse_scores.get(ip, "N/A")
+        }
+
+    return combined
+
 
 if __name__ == "__main__":
     test_ips = ["8.8.8.8", "1.1.1.1", "5.135.75.243"]
 
-    reputations = check_ip_reputation_levels(test_ips)
-    # print("AbuseIPDB-based reputations:")
-    for ip, level in reputations.items():
-        print(f"{ip}: {level}")
+    # reputations = check_ip_reputation_levels(test_ips)
+    # # print("AbuseIPDB-based reputations:")
+    # for ip, level in reputations.items():
+    #     print(f"{ip}: {level}")
 
     # Optional: call VirusTotal separately elsewhere
     vt_flags = get_virustotal_flags(test_ips)
