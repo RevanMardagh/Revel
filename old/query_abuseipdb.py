@@ -1,5 +1,6 @@
 from abuseipdb_wrapper import AbuseIPDB
 from definitions import ROOT_DIR
+# from os import path as os.path
 #
 #
 # def check_abuseipdb(ips):
@@ -24,7 +25,7 @@ from definitions import ROOT_DIR
 #
 def checkrep(ips):
     ABUSE_API_KEY = "ffc53215145b0aaddec3be4138ec4468e4fd57c20ee6f66d583bb00f45030ea81aef5d1b34c95530"
-    abuse = AbuseIPDB(api_key=ABUSE_API_KEY, db_file=f'{ROOT_DIR}/exports/abuseipdb.json')
+    abuse = AbuseIPDB(api_key=ABUSE_API_KEY, db_file=os.path.join(ROOT_DIR, "exports", "abuseipdb.json"))
     abuse.add_ip_list(ips)
     abuse.check()
 

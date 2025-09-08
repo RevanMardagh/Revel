@@ -42,4 +42,4 @@ class AIPage(QWidget):
 
     def show_unchecked(self):
         """Show unchecked message."""
-        self.info_text.setPlainText("You've disabled AI overview. Run the program again if you want AI to review the log file")
+        self.info_text.setPlainText("You've disabled AI overview. Enable AI overview if you want AI to review the log file")

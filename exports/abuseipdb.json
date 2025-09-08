@@ -1,4 +1,42 @@
 {
+    "13.56.237.135": {
+        "abuseConfidenceScore": 90,
+        "countryCode": "US",
+        "date": "2025-09-07T16:10:56+00:00",
+        "domain": "amazon.com",
+        "hostnames": [
+            "ec2-13-56-237-135.us-west-1.compute.amazonaws.com"
+        ],
+        "ipAddress": "13.56.237.135",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Amazon Technologies Inc.",
+        "lastReportedAt": "2025-08-17T20:08:49+00:00",
+        "numDistinctUsers": 33,
+        "totalReports": 36,
+        "url": "https://www.abuseipdb.com/check/13.56.237.135",
+        "usageType": "Data Center/Web Hosting/Transit"
+    },
+    "14.103.135.94": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "CN",
+        "date": "2025-09-07T16:10:58+00:00",
+        "domain": "bytedance.com",
+        "hostnames": [],
+        "ipAddress": "14.103.135.94",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Beijing Volcano Engine Technology Co., Ltd.",
+        "lastReportedAt": "2025-09-07T15:34:56+00:00",
+        "numDistinctUsers": 399,
+        "totalReports": 1110,
+        "url": "https://www.abuseipdb.com/check/14.103.135.94",
+        "usageType": "Fixed Line ISP"
+    },
     "14.103.172.199": {
         "abuseConfidenceScore": 100,
         "countryCode": "CN",
@@ -15,6 +53,24 @@
         "numDistinctUsers": 414,
         "totalReports": 1357,
         "url": "https://www.abuseipdb.com/check/14.103.172.199",
+        "usageType": "Fixed Line ISP"
+    },
+    "14.152.91.34": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "CN",
+        "date": "2025-09-07T16:10:59+00:00",
+        "domain": "chinatelecom.cn",
+        "hostnames": [],
+        "ipAddress": "14.152.91.34",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "CHINANET Guangdong province network",
+        "lastReportedAt": "2025-09-07T15:43:48+00:00",
+        "numDistinctUsers": 298,
+        "totalReports": 685,
+        "url": "https://www.abuseipdb.com/check/14.152.91.34",
         "usageType": "Fixed Line ISP"
     },
     "18.237.3.202": {
@@ -35,6 +91,342 @@
         "numDistinctUsers": 36,
         "totalReports": 38,
         "url": "https://www.abuseipdb.com/check/18.237.3.202",
+        "usageType": "Data Center/Web Hosting/Transit"
+    },
+    "20.121.70.44": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "US",
+        "date": "2025-09-07T16:10:59+00:00",
+        "domain": "microsoft.com",
+        "hostnames": [],
+        "ipAddress": "20.121.70.44",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Microsoft Corporation",
+        "lastReportedAt": "2025-09-06T23:38:09+00:00",
+        "numDistinctUsers": 424,
+        "totalReports": 1220,
+        "url": "https://www.abuseipdb.com/check/20.121.70.44",
+        "usageType": "Data Center/Web Hosting/Transit"
+    },
+    "23.147.8.240": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "US",
+        "date": "2025-09-07T16:11:00+00:00",
+        "domain": "namecrane.com",
+        "hostnames": [],
+        "ipAddress": "23.147.8.240",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "NameCrane LLC",
+        "lastReportedAt": "2025-09-07T00:00:18+00:00",
+        "numDistinctUsers": 442,
+        "totalReports": 1547,
+        "url": "https://www.abuseipdb.com/check/23.147.8.240",
+        "usageType": "Data Center/Web Hosting/Transit"
+    },
+    "24.117.58.251": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "US",
+        "date": "2025-09-07T16:11:00+00:00",
+        "domain": "cableone.biz",
+        "hostnames": [
+            "24-117-58-251.cpe.sparklight.net"
+        ],
+        "ipAddress": "24.117.58.251",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "CABLE ONE, INC.",
+        "lastReportedAt": "2025-09-01T17:07:55+00:00",
+        "numDistinctUsers": 324,
+        "totalReports": 654,
+        "url": "https://www.abuseipdb.com/check/24.117.58.251",
+        "usageType": "Fixed Line ISP"
+    },
+    "24.178.120.72": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "US",
+        "date": "2025-09-07T16:11:01+00:00",
+        "domain": "charter.com",
+        "hostnames": [
+            "syn-024-178-120-072.biz.spectrum.com"
+        ],
+        "ipAddress": "24.178.120.72",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Charter Communications LLC",
+        "lastReportedAt": "2025-08-26T15:21:06+00:00",
+        "numDistinctUsers": 245,
+        "totalReports": 440,
+        "url": "https://www.abuseipdb.com/check/24.178.120.72",
+        "usageType": "Fixed Line ISP"
+    },
+    "27.79.0.249": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "VN",
+        "date": "2025-09-07T16:11:01+00:00",
+        "domain": "viettel.com.vn",
+        "hostnames": [
+            "localhost"
+        ],
+        "ipAddress": "27.79.0.249",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Viettel Group",
+        "lastReportedAt": "2025-09-05T20:09:14+00:00",
+        "numDistinctUsers": 449,
+        "totalReports": 599,
+        "url": "https://www.abuseipdb.com/check/27.79.0.249",
+        "usageType": "Fixed Line ISP"
+    },
+    "27.79.1.56": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "VN",
+        "date": "2025-09-07T16:11:02+00:00",
+        "domain": "viettel.com.vn",
+        "hostnames": [
+            "localhost"
+        ],
+        "ipAddress": "27.79.1.56",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Viettel Group",
+        "lastReportedAt": "2025-09-04T00:44:13+00:00",
+        "numDistinctUsers": 531,
+        "totalReports": 793,
+        "url": "https://www.abuseipdb.com/check/27.79.1.56",
+        "usageType": "Fixed Line ISP"
+    },
+    "27.79.2.149": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "VN",
+        "date": "2025-09-07T16:11:02+00:00",
+        "domain": "viettel.com.vn",
+        "hostnames": [
+            "localhost"
+        ],
+        "ipAddress": "27.79.2.149",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Viettel Group",
+        "lastReportedAt": "2025-09-01T20:09:15+00:00",
+        "numDistinctUsers": 175,
+        "totalReports": 268,
+        "url": "https://www.abuseipdb.com/check/27.79.2.149",
+        "usageType": "Fixed Line ISP"
+    },
+    "27.79.43.103": {
+        "abuseConfidenceScore": 76,
+        "countryCode": "VN",
+        "date": "2025-09-07T16:11:05+00:00",
+        "domain": "viettel.com.vn",
+        "hostnames": [
+            "localhost"
+        ],
+        "ipAddress": "27.79.43.103",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Viettel Group",
+        "lastReportedAt": "2025-08-20T22:08:08+00:00",
+        "numDistinctUsers": 22,
+        "totalReports": 27,
+        "url": "https://www.abuseipdb.com/check/27.79.43.103",
+        "usageType": "Fixed Line ISP"
+    },
+    "27.79.44.148": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "VN",
+        "date": "2025-09-07T16:11:06+00:00",
+        "domain": "viettel.com.vn",
+        "hostnames": [
+            "localhost"
+        ],
+        "ipAddress": "27.79.44.148",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Viettel Group",
+        "lastReportedAt": "2025-08-31T16:01:03+00:00",
+        "numDistinctUsers": 541,
+        "totalReports": 863,
+        "url": "https://www.abuseipdb.com/check/27.79.44.148",
+        "usageType": "Fixed Line ISP"
+    },
+    "27.79.45.65": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "VN",
+        "date": "2025-09-07T16:11:07+00:00",
+        "domain": "viettel.com.vn",
+        "hostnames": [
+            "localhost"
+        ],
+        "ipAddress": "27.79.45.65",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Viettel Group",
+        "lastReportedAt": "2025-08-26T16:33:07+00:00",
+        "numDistinctUsers": 130,
+        "totalReports": 155,
+        "url": "https://www.abuseipdb.com/check/27.79.45.65",
+        "usageType": "Fixed Line ISP"
+    },
+    "27.79.45.85": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "VN",
+        "date": "2025-09-07T16:11:07+00:00",
+        "domain": "viettel.com.vn",
+        "hostnames": [
+            "localhost"
+        ],
+        "ipAddress": "27.79.45.85",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Viettel Group",
+        "lastReportedAt": "2025-08-31T16:01:00+00:00",
+        "numDistinctUsers": 254,
+        "totalReports": 369,
+        "url": "https://www.abuseipdb.com/check/27.79.45.85",
+        "usageType": "Fixed Line ISP"
+    },
+    "27.79.5.90": {
+        "abuseConfidenceScore": 98,
+        "countryCode": "VN",
+        "date": "2025-09-07T16:11:03+00:00",
+        "domain": "viettel.com.vn",
+        "hostnames": [
+            "localhost"
+        ],
+        "ipAddress": "27.79.5.90",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Viettel Group",
+        "lastReportedAt": "2025-08-25T20:09:04+00:00",
+        "numDistinctUsers": 27,
+        "totalReports": 34,
+        "url": "https://www.abuseipdb.com/check/27.79.5.90",
+        "usageType": "Fixed Line ISP"
+    },
+    "27.79.6.132": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "VN",
+        "date": "2025-09-07T16:11:03+00:00",
+        "domain": "viettel.com.vn",
+        "hostnames": [
+            "localhost"
+        ],
+        "ipAddress": "27.79.6.132",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Viettel Group",
+        "lastReportedAt": "2025-08-18T05:14:00+00:00",
+        "numDistinctUsers": 57,
+        "totalReports": 63,
+        "url": "https://www.abuseipdb.com/check/27.79.6.132",
+        "usageType": "Fixed Line ISP"
+    },
+    "27.79.6.145": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "VN",
+        "date": "2025-09-07T16:11:04+00:00",
+        "domain": "viettel.com.vn",
+        "hostnames": [
+            "localhost"
+        ],
+        "ipAddress": "27.79.6.145",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Viettel Group",
+        "lastReportedAt": "2025-09-05T23:00:03+00:00",
+        "numDistinctUsers": 84,
+        "totalReports": 102,
+        "url": "https://www.abuseipdb.com/check/27.79.6.145",
+        "usageType": "Fixed Line ISP"
+    },
+    "27.79.6.242": {
+        "abuseConfidenceScore": 97,
+        "countryCode": "VN",
+        "date": "2025-09-07T16:11:04+00:00",
+        "domain": "viettel.com.vn",
+        "hostnames": [
+            "localhost"
+        ],
+        "ipAddress": "27.79.6.242",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Viettel Group",
+        "lastReportedAt": "2025-08-27T20:09:08+00:00",
+        "numDistinctUsers": 25,
+        "totalReports": 34,
+        "url": "https://www.abuseipdb.com/check/27.79.6.242",
+        "usageType": "Fixed Line ISP"
+    },
+    "27.79.7.117": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "VN",
+        "date": "2025-09-07T16:11:05+00:00",
+        "domain": "viettel.com.vn",
+        "hostnames": [
+            "localhost"
+        ],
+        "ipAddress": "27.79.7.117",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "Viettel Group",
+        "lastReportedAt": "2025-09-03T12:01:02+00:00",
+        "numDistinctUsers": 127,
+        "totalReports": 168,
+        "url": "https://www.abuseipdb.com/check/27.79.7.117",
+        "usageType": "Fixed Line ISP"
+    },
+    "5.135.75.243": {
+        "abuseConfidenceScore": 100,
+        "countryCode": "FR",
+        "date": "2025-09-07T16:10:56+00:00",
+        "domain": "ovh.net",
+        "hostnames": [
+            "ip243.ip-5-135-75.eu"
+        ],
+        "ipAddress": "5.135.75.243",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": false,
+        "isp": "OVH SAS",
+        "lastReportedAt": "2025-09-07T10:07:13+00:00",
+        "numDistinctUsers": 245,
+        "totalReports": 1552,
+        "url": "https://www.abuseipdb.com/check/5.135.75.243",
         "usageType": "Data Center/Web Hosting/Transit"
     }
 }

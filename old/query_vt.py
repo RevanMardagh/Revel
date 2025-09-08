@@ -1,26 +1,23 @@
 import vt
 
 def check_virustotal(ips):
-    client = vt.Client("6959c5e658d3ec7fea72475347b4b8025c4a8de00767317f2e0e8c1978f0bab4")
-
+    client = vt.Client("fd336c37705badcf8f1a3c69821aaf6c3b744d2e167e6bddc89da6927b2cecb0")
     analysis_results = []
 
     for ip in ips:
-        url_id = vt.url_id(ip)
-        url = client.get_object("/urls/{}", url_id)
-        # print(url.last_analysis_stats)
-        print(url.reputation)
-        # print(dir(url))
-        # analysis_results.append(url)
-
-        # print(url.last_analysis_results)
-
+        try:
+            ip_obj = client.get_object(f"/ip_addresses/{ip}")
+            # print(ip_obj.last_analysis_stats)
+            # print("Reputation:", ip_obj.reputation)
+            analysis_results.append(ip_obj)
+        except vt.APIError as e:
+            print(f"Error checking {ip}: {e}")
 
     client.close()
     return analysis_results
-url2 = check_virustotal(["102.40.23.30"])
 
-# print(url2)
+# Example usage
+url2 = check_virustotal(["102.40.23.30", "1.1.1.1"])
 
-
-import requests
+for result in url2:
+    print(result.last_analysis_stats)

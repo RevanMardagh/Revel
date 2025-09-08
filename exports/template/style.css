@@ -1,0 +1,18 @@
+body {
+    max-width: 95%;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #333;
+    padding: 4px;
+    font-size: 12px;
+    text-align: left;
+}
+code {
+    color: orange;
+}
