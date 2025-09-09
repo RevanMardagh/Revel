@@ -1,6 +1,9 @@
 # Revel Log Analyzer
 ~ by Ravan Ismayilov
 
+Check out on GitHub! 
+https://github.com/RevanMardagh/Revel
+
 A desktop application for analyzing log files, generating per-IP statistics, and creating AI-assisted summaries. Built with Python, PyQt6, and blood of the innocent.
 ## Features
 
