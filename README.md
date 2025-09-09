@@ -84,3 +84,4 @@ Run `pip install -r requirements.txt` to install all dependencies
 - For some insane reason, the script does 3 AbuseIPDB checks, which slow down the script. For now, you will just have to wait a few seconds after pressing `Select`. 
   I will get down to fix this, eventually.
 - The tables in exported .docx files are huge, therefore they overflow to multiple pages. Genuinely no idea how to fix this. Pandoc is weird
+
