@@ -18,7 +18,7 @@ def ip_statistics(logs):
     ip_list = list(ip_counts.keys())
 
     # --- get reputation levels ---
-    reputation = check_ip_reputation_levels(ip_list)  # returns {'ip': 'Malicious', ...}
+    # reputation = check_ip_reputation_levels(ip_list)  # returns {'ip': 'Malicious', ...}
 
     # --- get detailed reports from VT & AbuseIPDB ---
     reports = {}
@@ -56,6 +56,7 @@ def ip_statistics(logs):
             vt_formatted = "N/A"
 
         abuse_score = reports.get(addr, {}).get("abuseipdb", "N/A")
+        reputation = reports.get(addr, {}).get("reputation", "Unknown")
 
         # --- merge reputation ---
         results[addr] = {
@@ -66,7 +67,7 @@ def ip_statistics(logs):
             "user_agents": sorted_ua_counts,
             "virustotal": vt_formatted,
             "abuseipdb": abuse_score,
-            "reputation": reputation.get(addr, "Unknown")  # <--- new field
+            "reputation": reputation
         }
 
     return results

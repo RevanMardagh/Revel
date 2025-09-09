@@ -27,6 +27,7 @@ def on_file_selected(file_path, ai_page=None, ai_callback=None, exports_page=Non
     Called when a log file is selected in the GUI.
     Parses logs, calculates stats, and optionally generates AI overview.
     """
+    print("File selected: {}".format(file_path))
     settings = load_settings()
     gemini_api_key = settings.get("gemini_key", "")
 
