@@ -73,3 +73,12 @@ Modifying settings should be fairly simple. You can press **show** to see/modify
 - All required Python libraries are listed in the `requirements.txt` file.
 
 Run `pip install -r requirements.txt` to install all dependencies
+
+---
+
+## Notes
+
+- For some insane reason, the script does 3 AbuseIPDB checks, which slow down the script. For now, you will just have to wait a few seconds after pressing `Select`. 
+  I will get down to fix this, eventually.
+- The tables in exported .docx files are huge, therefore they overflow to multiple pages. Genuinely no idea how to fix this. Pandoc is weird
+- 
