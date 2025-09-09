@@ -82,4 +82,4 @@ Run `pip install -r requirements.txt` to install all dependencies
 ## Notes
 
 - The tables in exported .docx files are huge, therefore they overflow to multiple pages. Genuinely no idea how to fix this. Pandoc is weird
-
+- 
