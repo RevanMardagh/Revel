@@ -2,7 +2,7 @@
     "abuseipdb_key": "ffc53215145b0aaddec3be4138ec4468e4fd57c20ee6f66d583bb00f45030ea81aef5d1b34c95530",
     "virustotal_key": "fd336c37705badcf8f1a3c69821aaf6c3b744d2e167e6bddc89da6927b2cecb0",
     "gemini_key": "AIzaSyBfIbqkLpHsxZdubj-_IVk-t2OOPKw47r4",
-    "ai_enabled": false,
+    "ai_enabled": true,
     "last_file": "C:/Users/Ravan/PycharmProjects/LogAnalyzer/logs/new_log.txt",
     "theme": "dark"
 }
