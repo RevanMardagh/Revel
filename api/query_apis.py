@@ -1,6 +1,4 @@
 import vt
-from abuseipdb_wrapper import AbuseIPDB
-from definitions import ROOT_DIR
 from mylibs.settings import load_settings
 import os
 
@@ -8,15 +6,13 @@ import os
 settings = load_settings()
 
 # --- AbuseIPDB function ---
-from abuseipdb_wrapper import AbuseIPDB
-from definitions import ROOT_DIR
 from mylibs.settings import load_settings
 
 # Load settings
 settings = load_settings()
 
 from abuseipdb_wrapper import AbuseIPDB
-from definitions import ROOT_DIR
+from mylibs.definitions import ROOT_DIR
 from mylibs.settings import load_settings
 
 settings = load_settings()
