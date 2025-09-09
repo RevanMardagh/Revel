@@ -6,9 +6,6 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, QTimer
 from pathlib import Path
 from mylibs.settings import load_settings, save_settings
-import sys
-import os
-import subprocess
 
 
 class FilePage(QWidget):

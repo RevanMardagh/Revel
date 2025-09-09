@@ -33,6 +33,8 @@ def ip_statistics(logs):
         for future in as_completed(future_to_ip):
             ip, report = future.result()
             reports[ip] = report
+    # reports = get_ip_report(ip_list)
+
 
     results = {}
     for addr, counts in status_counts.items():

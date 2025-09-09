@@ -5,6 +5,7 @@ from mylibs.definitions import ROOT_DIR
 from mylibs.settings import load_settings
 
 
+
 # Load settings
 settings = load_settings()
 
