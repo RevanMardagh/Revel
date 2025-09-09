@@ -6,3 +6,10 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+
+
+.venv/
+__pycache__/
+old/
+temp.txt
+exports/logs/*

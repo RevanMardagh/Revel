@@ -80,13 +80,15 @@ class LogAnalyzerApp(QMainWindow):
         self.exports_page = ExportsPage() # start with empty data
 
         def wrapped_file_selected(file_path):
+
+
             if on_file_selected:
                 results = on_file_selected(
                     file_path,
                     ai_page=self.ai_page,
                     exports_page=self.exports_page  # pass the exports page
                 )
-                self.next_page.set_data(results["parsed_data"])
+                self.next_page.set_data(results["parsed_data"], results["ip_stats"])
                 self.stats_page.set_stats(results["log_stats"], results["ip_stats"])
 
             self.sidebar.setCurrentRow(1)

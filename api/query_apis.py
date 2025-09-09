@@ -64,7 +64,7 @@ def get_virustotal_flags(ips, api_key=None):
                 "total": sum(stats.values())
             }
         except vt.APIError as e:
-            print(f"Error checking {ip}: {e}")
+            # print(f"Error checking {ip}: {e}")
             vt_scores[ip] = {"malicious": 0, "suspicious": 0, "total": 0}
 
     client.close()
@@ -73,13 +73,13 @@ def get_virustotal_flags(ips, api_key=None):
 
 
 # --- Risk level function using only AbuseIPDB ---
-def check_ip_reputation_levels(ips):
+def check_ip_reputation_levels(ips, abuse_scores):
     """
     Assigns a risk level to each IP based only on AbuseIPDB confidence score.
     Returns: { ip: "Safe"/"Low Risk"/"Medium Risk"/"High Risk"/"Malicious" }
     """
-    abuse_scores = get_abuseipdb_scores(ips)
-    print("Abuse score  ", abuse_scores)
+    # abuse_scores = get_abuseipdb_scores(ips)
+    # print("Abuse score  ", abuse_scores)
     results = {}
 
     for ip, score in abuse_scores.items():
@@ -107,12 +107,14 @@ def get_ip_report(ips):
     """
     abuse_scores = get_abuseipdb_scores(ips)    # expected: {ip: score}
     virustotal_flags = get_virustotal_flags(ips)  # expected: {ip: {malicious, suspicious, total}}
+    reputation = check_ip_reputation_levels(ips, abuse_scores)
 
     combined = {}
     for ip in ips:
         combined[ip] = {
             "virustotal": virustotal_flags.get(ip, {}),
-            "abuseipdb": abuse_scores.get(ip, "N/A")
+            "abuseipdb": abuse_scores.get(ip, "N/A"),
+            "reputation": reputation.get(ip, {})
         }
 
     return combined
@@ -127,5 +129,5 @@ if __name__ == "__main__":
     #     print(f"{ip}: {level}")
 
     # Optional: call VirusTotal separately elsewhere
-    vt_flags = get_virustotal_flags(test_ips)
+    vt_flags = get_ip_report(test_ips)
     print("\nVirusTotal flagged counts:", vt_flags)
