@@ -1,20 +1,11 @@
 import vt
-from mylibs.settings import load_settings
 import os
-
-# Load settings
-settings = load_settings()
-
-# --- AbuseIPDB function ---
-from mylibs.settings import load_settings
-
-# Load settings
-settings = load_settings()
-
 from abuseipdb_wrapper import AbuseIPDB
 from mylibs.definitions import ROOT_DIR
 from mylibs.settings import load_settings
 
+
+# Load settings
 settings = load_settings()
 
 def get_abuseipdb_scores(ips, api_key=None):
