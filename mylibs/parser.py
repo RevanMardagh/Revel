@@ -1,7 +1,5 @@
 import json
-import os
-from definitions import ROOT_DIR
-import datetime
+
 
 def parser(file):
     # file = get_file()

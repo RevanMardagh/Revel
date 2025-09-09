@@ -2,6 +2,7 @@ import os
 import shutil
 import pypandoc
 from tabulate import tabulate  # For nice tables in Markdown
+from mylibs.settings import load_settings
 
 def get_unique_output_dir(base_dir: str) -> str:
     """
@@ -67,7 +68,10 @@ def export_logs_and_ai(
     md_lines.append(md_table + "\n")
 
     # --- AI Overview ---
-    if ai_text:
+    settings = load_settings()
+    ai_allowed = settings.get("ai_allowed", False)
+
+    if ai_text and ai_allowed:
         md_lines.append("## AI Overview\n")
         md_lines.append(ai_text)
 

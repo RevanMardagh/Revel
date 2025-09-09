@@ -41,7 +41,7 @@ class ExportsPage(QWidget):
         self.txt_cb = QCheckBox("Text (.txt)")
         self.html_cb = QCheckBox("HTML (.html)")
         self.docx_cb = QCheckBox("DOCX (.docx)")
-        self.pdf_cb = QCheckBox("PDF (.pdf)")
+        self.pdf_cb = QCheckBox("PDF (.pdf) (doesnt work yet)")
 
         font = QFont()
         font.setPointSize(11)

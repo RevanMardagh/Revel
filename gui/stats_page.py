@@ -92,7 +92,7 @@ class StatsPage(QWidget):
                         color = "#E59866"
                     else:
                         color = "#D5D8DC"
-                    status_html += f'<span style="background-color:{color}; padding:2px; margin:1px; border-radius:3px;">{status}:</span> {count}; '
+                    status_html += f'<span>{status}: {count}</span>;  '
 
                 status_label = QLabel(status_html)
                 status_label.setTextFormat(Qt.TextFormat.RichText)
