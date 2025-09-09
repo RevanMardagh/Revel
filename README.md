@@ -68,6 +68,9 @@ Modifying settings should be fairly simple. You can press **show** to see/modify
 - If there already is a folder with the same name, "_1" is appended to the folder name. 
     The number is incremented if there are multiple duplicates
 - Press **Refresh Data from AI** after AI has loaded its summary to prepare it to be exported. 
+
+---
+
 ## Dependencies
 
 - All required Python libraries are listed in the `requirements.txt` file.
@@ -81,4 +84,3 @@ Run `pip install -r requirements.txt` to install all dependencies
 - For some insane reason, the script does 3 AbuseIPDB checks, which slow down the script. For now, you will just have to wait a few seconds after pressing `Select`. 
   I will get down to fix this, eventually.
 - The tables in exported .docx files are huge, therefore they overflow to multiple pages. Genuinely no idea how to fix this. Pandoc is weird
-- 
