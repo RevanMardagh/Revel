@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 SETTINGS_FILE = Path("settings.json")
+# print(SETTINGS_FILE)
 
 DEFAULT_SETTINGS = {
     "abuseipdb_key": "",
