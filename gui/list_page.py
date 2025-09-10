@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QLabel, QLineEdit, QTableView,
-    QApplication, QHBoxLayout, QComboBox, QHeaderView
+    QHBoxLayout, QComboBox, QHeaderView, QMessageBox
 )
 from PyQt6.QtCore import Qt, QSortFilterProxyModel
 from PyQt6.QtGui import QStandardItemModel, QStandardItem, QColor
@@ -146,12 +146,28 @@ class NextPage(QWidget):
     def update_row_count(self):
         self.row_count_label.setText(f"Rows: {self.proxy_model.rowCount()}")
 
-    def set_data(self, raw_data, ip_stats):
+    def set_data(self, raw_data, ip_stats, file_page=None, parent_window=None):
         """
         raw_data: list of dicts with keys:
         timestamp, remote_addr, method, uri, status, user_agent
         ip_stats: dict with ip -> {"reputation": "Safe"/...}
+        file_page: reference to the file selection page to return to
         """
+        if not raw_data or ip_stats == -1:
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Warning)
+            msg.setWindowTitle("Error")
+            msg.setText("Log file is empty, or incorrect format")
+            msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+            msg.exec()
+
+
+            # parent_window.sidebar.setCurrentRow(0)
+            # MAKE IT MOVE TO FILE_PAGE
+            # self.parent.sidebar.setCurrentRow(0)  # index of first page
+            return
+
+
         self.raw_data = raw_data
         self.model.setRowCount(0)
 

@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QListWidget, QStackedWidget, QHBoxLayout, QWidget
+from PyQt6.QtWidgets import QApplication, QMainWindow, QListWidget, QStackedWidget, QHBoxLayout, QWidget, QMessageBox
 from PyQt6.QtGui import QGuiApplication, QIcon
 from PyQt6.QtCore import Qt
 from gui.file_page import FilePage
@@ -89,9 +89,18 @@ class LogAnalyzerApp(QMainWindow):
                     ai_page=self.ai_page,
                     exports_page=self.exports_page  # pass the exports page
                 )
+                if not results["parsed_data"]:
+                    # Show popup
+                    msg_box = QMessageBox()
+                    msg_box.setIcon(QMessageBox.Icon.Warning)
+                    msg_box.setWindowTitle("Log File Error")
+                    msg_box.setText("⚠️ Incorrect or empty log file!")
+                    msg_box.exec()
+                    return -1
                 self.next_page.set_data(results["parsed_data"], results["ip_stats"])
                 self.stats_page.set_stats(results["log_stats"], results["ip_stats"])
 
+                self.sidebar.setCurrentRow(1)  # index of next page
 
         self.file_page = FilePage(parent=self, on_file_selected=wrapped_file_selected)
 

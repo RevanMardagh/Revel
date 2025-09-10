@@ -226,8 +226,8 @@ class FilePage(QWidget):
                 self.parent.selected_file = log_file
 
                 # Automatically go to the next page (e.g., stats page)
-                if hasattr(self.parent, "sidebar"):
-                    self.parent.sidebar.setCurrentRow(1)  # index of next page
+                # if hasattr(self.parent, "sidebar"):
+                #     self.parent.sidebar.setCurrentRow(1)  # index of next page
 
             # Call the callback
             if self.on_file_selected:
