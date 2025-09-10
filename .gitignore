@@ -3,3 +3,4 @@ __pycache__/
 old/
 temp.txt
 exports/logs/*
+settings.json

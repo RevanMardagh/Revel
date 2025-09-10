@@ -53,7 +53,6 @@ def get_abuseipdb_scores(ips, api_key=None):
 # def get_virustotal_flags(ips, api_key=None):
 #     api_key = settings.get("virustotal_key")
 #     if not api_key:  # catches None or empty string
-#         api_key = "fd336c37705badcf8f1a3c69821aaf6c3b744d2e167e6bddc89da6927b2cecb0"
 #
 #     client = vt.Client(api_key)
 #     vt_scores = {}
@@ -87,7 +86,7 @@ def get_virustotal_flags(ips, api_key=None, max_workers=10):
         api_key = settings.get("virustotal_key")
     if not api_key:
         # fallback API key (⚠️ better to avoid hardcoding secrets)
-        api_key = "fd336c37705badcf8f1a3c69821aaf6c3b744d2e167e6bddc89da6927b2cecb0"
+        print("VirusTotal API key not configured")
 
     def fetch(ip):
         try:
