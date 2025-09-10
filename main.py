@@ -33,6 +33,14 @@ def on_file_selected(file_path, ai_page=None, ai_callback=None, exports_page=Non
 
     parsed_data = parser(file_path)
     log_stats, ip_stats = log_statistics(parsed_data)
+
+    if log_stats == -1:
+        print("Incorrectly formatted, or empty log file")
+        return {
+        "parsed_data": parsed_data,
+        "ip_stats": ip_stats
+        }
+
     ip_list = [entry["remote_addr"] for entry in parsed_data]
 
     # Send stats immediately to ExportsPage (AI may arrive later)

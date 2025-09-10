@@ -2,11 +2,9 @@ import json
 
 
 def parser(file):
-    # file = get_file()
-    # print(file)
     if file is None:
         print("No file specified, exiting...")
-        return
+        return -1
 
     parsed_logs = []
 
@@ -16,16 +14,15 @@ def parser(file):
             if not line:
                 continue
 
-            # Split into 3
+            # Expect 3 tab-separated parts
             parts = line.split("\t", 2)
             if len(parts) != 3:
-                continue  # skip bad lines
+                continue
 
-            # Convert to JSON
+            # Parse JSON
             try:
                 data = json.loads(parts[2])
             except json.JSONDecodeError:
-                # print(f"Skipping line  - {line} - malformed line")
                 continue
 
             parsed_logs.append({
@@ -34,23 +31,10 @@ def parser(file):
                 **data
             })
 
-    # ---
-    # unique_addresses = {entry["remote_addr"] for entry in parsed_logs}
-
-    # print(parsed_logs)
-    # print("IP addresses and their counts:")
-    # for ip, count in ip_counts.items():
-    #     print(f"{ip}:\t{count}")
-
-    # folder_name = "exports\\Log_" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    # os.makedirs(os.path.join(ROOT_DIR, folder_name))
-    #
-    # with open(f"{ROOT_DIR}\\{folder_name}\\parsed_logs.txt", "w") as f:
-    #     for line in parsed_logs:
-    #         f.write(str(line) + "\n")
+    # If no valid lines were parsed, return -1
+    if not parsed_logs:
+        return []
 
     return parsed_logs
 
-
-
-# parser()
+# print(parser("C:/Users/Ravan/PycharmProjects/LogAnalyzer/logs/access_log.txt"))

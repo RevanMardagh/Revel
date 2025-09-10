@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QTableWidget, QTableWi
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 
+
 class StatsPage(QWidget):
     def __init__(self):
         super().__init__()
@@ -31,7 +32,7 @@ class StatsPage(QWidget):
                 "User Agents",
                 "VirusTotal Flags",
                 "AbuseIPDB Score",
-                "Conclusion"
+                "Conclusion",
             ]
         )
         layout.addWidget(self.table)
@@ -44,26 +45,25 @@ class StatsPage(QWidget):
             "Medium Risk": QColor("#F7DC6F"),
             "High Risk": QColor("#F1948A"),
             "Malicious": QColor("#5A1111"),
-            "Unknown": QColor()  # default transparent
+            "Unknown": QColor(),  # default transparent
         }
 
         # --- Column resizing ---
         header = self.table.horizontalHeader()
-        # Stretch URI and User Agents for readability
-        header.setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)  # Status Counts
-        header.setSectionResizeMode(4, QHeaderView.ResizeMode.Stretch)  # User Agents
-        header.setSectionResizeMode(7, QHeaderView.ResizeMode.Stretch)  # Conclusion
+        header.setSectionResizeMode(QHeaderView.ResizeMode.Interactive)  # all columns resizable
+        header.setStretchLastSection(False)
 
-        # Other columns resize to contents
-        for col in [0, 1, 2, 5, 6]:
-            header.setSectionResizeMode(col, QHeaderView.ResizeMode.ResizeToContents)
+        # Special resize rules
+        header.setSectionResizeMode(7, QHeaderView.ResizeMode.ResizeToContents)  # Conclusion fits content
+        header.setSectionResizeMode(4, QHeaderView.ResizeMode.Stretch)  # User Agents stretches
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)  # Status Counts stretches
 
     def set_stats(self, log_stats: dict, ip_stats: dict = None):
+
         # --- Global stats ---
         text = (
             f"Total Requests: {log_stats.get('total_requests', 0)}\n"
             f"Unique IPs: {log_stats.get('unique_ips', 0)}\n"
-            # f"Most Common IP: {log_stats.get('most_common_ip', 'N/A')}\n"
             f"4xx Error Ratio: {log_stats.get('error_rate', 'N/A')}\n"
         )
         self.info_label.setText(text)
@@ -77,9 +77,9 @@ class StatsPage(QWidget):
                 self.table.setItem(row, 1, QTableWidgetItem(str(stats["total_requests"])))
                 self.table.setItem(row, 2, QTableWidgetItem(stats["4xx_ratio"]))
 
-                # Status counts as HTML badges
-                status_html = ""
-                for status, count in stats["status_counts"].items():
+                # --- Status counts: centered, bold bubbles ---
+                status_html = '<div style="text-align:center;">'
+                for status, count in sorted(stats["status_counts"].items()):
                     if 100 <= status < 200:
                         color = "#85C1E9"
                     elif 200 <= status < 300:
@@ -92,15 +92,24 @@ class StatsPage(QWidget):
                         color = "#E59866"
                     else:
                         color = "#D5D8DC"
-                    status_html += f'<span>{status}: {count}</span>;  '
+                    status_html += (
+                        f'<span style="background:{color}; '
+                        f'padding:8px; margin:10px; '
+                        f'border-radius:12px; font-weight:bold; '
+                        f'display:inline-block;">'
+                        f'{status}: {count}</span> '
+                    )
+                status_html += '</div>'
 
                 status_label = QLabel(status_html)
                 status_label.setTextFormat(Qt.TextFormat.RichText)
                 status_label.setWordWrap(True)
+                status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
                 self.table.setCellWidget(row, 3, status_label)
 
-                # User agents as multi-line QLabel
-                ua_text = "\n\r".join(f"{ua}: {count}" for ua, count in stats["user_agents"].items())
+                # --- User agents: shortest first ---
+                sorted_uas = sorted(stats["user_agents"].items(), key=lambda x: len(x[0]))
+                ua_text = "\n".join(f"{ua}: {count}" for ua, count in sorted_uas)
                 ua_label = QLabel(ua_text)
                 ua_label.setWordWrap(True)
                 self.table.setCellWidget(row, 4, ua_label)
@@ -118,5 +127,12 @@ class StatsPage(QWidget):
                 conclusion_item = QTableWidgetItem(conclusion)
                 conclusion_item.setBackground(self.colors.get(conclusion, QColor()))
                 self.table.setItem(row, 7, conclusion_item)
+
+            # Auto-resize rows to fit content (important for status counts & UAs)
+            self.table.resizeRowsToContents()
+
+            # Make Status Counts column as narrow as possible
+            self.table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
+
         else:
             self.table.setRowCount(0)

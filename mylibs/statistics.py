@@ -27,13 +27,13 @@ def ip_statistics(logs):
             return ip, get_ip_report([ip]).get(ip, {})
         except Exception:
             return ip, {}
-
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        future_to_ip = {executor.submit(fetch_report, ip): ip for ip in ip_list}
-        for future in as_completed(future_to_ip):
-            ip, report = future.result()
-            reports[ip] = report
-    # reports = get_ip_report(ip_list)
+    #
+    # with ThreadPoolExecutor(max_workers=1) as executor:
+    #     future_to_ip = {executor.submit(fetch_report, ip): ip for ip in ip_list}
+    #     for future in as_completed(future_to_ip):
+    #         ip, report = future.result()
+    #         reports[ip] = report
+    reports = get_ip_report(ip_list)
 
 
     results = {}
@@ -47,13 +47,18 @@ def ip_statistics(logs):
 
         vt_data = reports.get(addr, {}).get("virustotal", {})
         if vt_data:
-            total_flags = sum(vt_data.values())
+            total_flags = vt_data.get('total')
+            # print(total_flags)
+            # print(vt_data)
             malicious_flags = vt_data.get("malicious", 0)
             suspicious_flags = vt_data.get("suspicious", 0)
             if total_flags > 0:
-                vt_formatted = f"Total: {total_flags}, Malicious: {malicious_flags}, Suspicious: {suspicious_flags}"
+                vt_formatted = f"Malicious: {malicious_flags}, Suspicious: {suspicious_flags}, Total: {total_flags}"
+            elif total_flags  <= -1:
+                vt_formatted = f"No internet access, try again"
             else:
                 vt_formatted = f"Virustotal API Quota exceeded"
+
         else:
             vt_formatted = "N/A"
 
@@ -77,34 +82,38 @@ def ip_statistics(logs):
 
 
 def log_statistics(parsed_data):
-    total_requests = len(parsed_data)
-    unique_ips = len(set(entry["remote_addr"] for entry in parsed_data))
+    if not parsed_data:
+        # print(parsed_data)
+        return -1, -1
+    else:
+        total_requests = len(parsed_data)
+        unique_ips = len(set(entry["remote_addr"] for entry in parsed_data))
 
-    error_count = sum(1 for e in parsed_data if str(e["status"]).startswith("4"))
-    # error_count = sum(1 for e in parsed_data if int(e["status"]) >= 400 and int(e["status"]) < 500)
-    error_rate = f"{error_count}/{total_requests} ({error_count/total_requests:.2%})"
-    # error_rate = error_count / total_requests
-
-
-    ip_stats = ip_statistics(parsed_data)
-    # print(ip_stats)
-    #
-    # print(f"Total requests: {total_requests}")
-    # print(f"Unique IPs: {unique_ips}")
-    # print(f"Errors: {error_count}")
-    # print(f"4xx ratio within the log: {error_rate}\n\r\n\r")
-    #
-    # for addr, data in ip_stats.items():
-    #     print(f"{addr}: {data}")
+        error_count = sum(1 for e in parsed_data if str(e["status"]).startswith("4"))
+        # error_count = sum(1 for e in parsed_data if int(e["status"]) >= 400 and int(e["status"]) < 500)
+        error_rate = f"{error_count}/{total_requests} ({error_count/total_requests:.2%})"
+        # error_rate = error_count / total_requests
 
 
-    return {
-        "total_requests": total_requests,
-        "unique_ips": unique_ips,
-        "error_count": error_count,
-        "error_rate": error_rate
+        ip_stats = ip_statistics(parsed_data)
+        # print(ip_stats)
+        #
+        # print(f"Total requests: {total_requests}")
+        # print(f"Unique IPs: {unique_ips}")
+        # print(f"Errors: {error_count}")
+        # print(f"4xx ratio within the log: {error_rate}\n\r\n\r")
+        #
+        # for addr, data in ip_stats.items():
+        #     print(f"{addr}: {data}")
 
-    }, ip_stats
+
+        return {
+            "total_requests": total_requests,
+            "unique_ips": unique_ips,
+            "error_count": error_count,
+            "error_rate": error_rate
+
+        }, ip_stats
 
 
 if __name__ == "__main__":
