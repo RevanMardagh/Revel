@@ -428,5 +428,23 @@
         "totalReports": 1488,
         "url": "https://www.abuseipdb.com/check/5.135.75.243",
         "usageType": "Data Center/Web Hosting/Transit"
+    },
+    "94.20.49.98": {
+        "abuseConfidenceScore": 0,
+        "countryCode": "AZ",
+        "date": "2025-09-10T05:53:31+00:00",
+        "domain": "delta-telecom.net",
+        "hostnames": [],
+        "ipAddress": "94.20.49.98",
+        "ipVersion": 4,
+        "isPublic": true,
+        "isTor": false,
+        "isWhitelisted": null,
+        "isp": "DELTA Broadband Network",
+        "lastReportedAt": null,
+        "numDistinctUsers": 0,
+        "totalReports": 0,
+        "url": "https://www.abuseipdb.com/check/94.20.49.98",
+        "usageType": "Fixed Line ISP"
     }
 }
