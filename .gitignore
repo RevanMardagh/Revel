@@ -2,5 +2,5 @@
 __pycache__/
 old/
 temp.txt
-exports/logs/*
+exports/*
 settings.json

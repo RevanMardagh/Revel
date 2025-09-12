@@ -17,7 +17,7 @@ from api.gemini import generate_ai_overview
 def handle_ai_text(ai_text, log_stats, ip_stats, exports_page):
     from PyQt6.QtCore import QTimer
 
-    with open(os.path.join("exports", "temp.txt"), "w", encoding="utf-8") as f:
+    with open(os.path.join("db", "temp.txt"), "w", encoding="utf-8") as f:
         f.write(ai_text)
 
     # Thread-safe update to ExportsPage

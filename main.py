@@ -4,21 +4,6 @@ from mylibs.statistics import log_statistics
 from api.gemini import generate_ai_overview
 import threading
 from mylibs.settings import load_settings
-import os
-# # --- AI callback ---
-# def handle_ai_text(ai_text, log_stats, ip_stats, exports_page):
-#     from PyQt6.QtCore import QTimer
-#
-#     # Thread-safe update to ExportsPage
-#     def update_export():
-#         exports_page.update_data(
-#             log_stats=log_stats,
-#             ip_stats=ip_stats,
-#             ai_text=ai_text
-#         )
-#
-#     QTimer.singleShot(0, update_export)
-
 
 
 # --- File selected callback ---
@@ -94,13 +79,3 @@ run_gui(
     on_file_selected=parse_file   # parsing only
 )
 
-
-# run_gui(
-#     on_file_selected=lambda fp, ai_page=None, exports_page=None:
-#         on_file_selected(
-#             fp,
-#             ai_page=ai_page,
-#             ai_callback=handle_ai_text,
-#             exports_page=exports_page
-#         )
-# )

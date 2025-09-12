@@ -36,23 +36,22 @@ class ExportsPage(QWidget):
         name_layout.addWidget(self.name_input)
         layout.addLayout(name_layout)
 
-        # --- File type checkboxes ---
+        # --- File type checkboxes (PDF removed) ---
         self.md_cb = QCheckBox("Markdown (.md)")
         self.txt_cb = QCheckBox("Text (.txt)")
         self.html_cb = QCheckBox("HTML (.html)")
         self.docx_cb = QCheckBox("DOCX (.docx)")
-        self.pdf_cb = QCheckBox("PDF (.pdf) (doesnt work yet)")
 
         font = QFont()
         font.setPointSize(11)
-        for cb in [self.md_cb, self.txt_cb, self.html_cb, self.docx_cb, self.pdf_cb]:
+        for cb in [self.md_cb, self.txt_cb, self.html_cb, self.docx_cb]:
             cb.setFont(font)
             cb.setStyleSheet("margin: 2px;")
             cb.setChecked(True)
 
         types_group = QGroupBox("File Types to Export")
         types_layout = QVBoxLayout()
-        for cb in [self.md_cb, self.txt_cb, self.html_cb, self.docx_cb, self.pdf_cb]:
+        for cb in [self.md_cb, self.txt_cb, self.html_cb, self.docx_cb]:
             types_layout.addWidget(cb)
         types_layout.addStretch()
         types_group.setLayout(types_layout)
@@ -91,7 +90,7 @@ class ExportsPage(QWidget):
         """
         Pull the latest AI text from disk and update internal state.
         """
-        ai_file = os.path.join(os.getcwd(), "exports", "temp.txt")
+        ai_file = os.path.join(os.getcwd(), "db", "temp.txt")
         if os.path.exists(ai_file):
             with open(ai_file, "r", encoding="utf-8") as f:
                 self.ai_text = f.read()
@@ -118,7 +117,6 @@ class ExportsPage(QWidget):
         if self.txt_cb.isChecked(): selected_types.append("txt")
         if self.html_cb.isChecked(): selected_types.append("html")
         if self.docx_cb.isChecked(): selected_types.append("docx")
-        if self.pdf_cb.isChecked(): selected_types.append("pdf")
 
         if not selected_types:
             self.status_label.setText("⚠️ Please select at least one file type")
