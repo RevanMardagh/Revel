@@ -1,8 +1,7 @@
 import os
 import shutil
 import pypandoc
-from tabulate import tabulate  # For nice tables in Markdown
-
+from tabulate import tabulate
 from mylibs.definitions import ROOT_DIR
 from mylibs.settings import load_settings
 
@@ -19,9 +18,10 @@ def get_unique_output_dir(base_dir: str) -> str:
     os.makedirs(unique_dir, exist_ok=True)
     return unique_dir
 
+
 def export_logs_and_ai(
-    log_stats: dict,
-    ip_stats: dict,
+    log_stats: dict = None,
+    ip_stats: dict = None,
     ai_text: str = None,
     output_dir: str = os.path.join("exports", "logs"),
     base_name: str = "log_report",
@@ -31,12 +31,16 @@ def export_logs_and_ai(
     Export logs + AI overview into multiple formats.
     :param formats: list of file types to export, e.g., ["md","txt","html","docx","pdf"]
     """
+
+    # Defensive defaults
+    log_stats = log_stats or {}
+    ip_stats = ip_stats or {}
     formats = formats or ["md", "txt", "html", "docx", "pdf"]
 
     output_dir = os.path.join(output_dir, base_name)
     output_dir = get_unique_output_dir(output_dir)
 
-    # --- Prepare Markdown content ---
+    # --- Markdown content ---
     md_lines = []
 
     # --- Log statistics summary ---
@@ -53,12 +57,13 @@ def export_logs_and_ai(
     md_lines.append(f"- Error Count: {error_count}")
     md_lines.append(f"- Error Rate: {error_rate_str}\n")
 
-    # --- IP table ---
+    # --- Per-IP statistics ---
     md_lines.append("## Per-IP Statistics\n")
     table_data = []
     headers = ["IP", "Total Requests", "4xx Ratio", "Status Counts", "VirusTotal", "AbuseIPDB"]
 
-    for ip, stats in ip_stats.items():
+    for ip, stats in (ip_stats or {}).items():
+        stats = stats or {}
         total = stats.get("total_requests", 0)
         ratio = stats.get("4xx_ratio", "0/0")
         status_counts = stats.get("status_counts", {})
@@ -66,16 +71,25 @@ def export_logs_and_ai(
         abuseipdb = stats.get("abuseipdb", "N/A")
         table_data.append([ip, total, ratio, status_counts, virustotal, abuseipdb])
 
-    md_table = tabulate(table_data, headers=headers, tablefmt="github")
-    md_lines.append(md_table + "\n")
+    if table_data:
+        md_table = tabulate(table_data, headers=headers, tablefmt="github")
+        md_lines.append(md_table + "\n")
+    else:
+        md_lines.append("No IP statistics available.\n")
 
     # --- AI Overview ---
     settings = load_settings()
     ai_allowed = settings.get("ai_enabled", False)
 
-    with open(os.path.join(ROOT_DIR, "exports", "temp.txt"), "r", encoding="utf-8") as f:
-        ai_text = f.read()
-        # print(ai_text)
+    # Read AI from temp.txt if not provided
+    if not ai_text:
+        temp_file = os.path.join(ROOT_DIR, "exports", "temp.txt")
+        if os.path.exists(temp_file):
+            try:
+                with open(temp_file, "r", encoding="utf-8") as f:
+                    ai_text = f.read()
+            except Exception:
+                ai_text = ""
 
     if ai_text and ai_allowed:
         md_lines.append("## AI Overview\n")
@@ -132,21 +146,21 @@ def export_logs_and_ai(
         except Exception as e:
             print(f"⚠️ DOCX export failed: {e}")
 
-    # --- Export PDF ---
-    if "pdf" in formats:
-        pdf_file = os.path.join(output_dir, f"{base_name}.pdf")
-        if shutil.which("pdflatex"):
-            try:
-                pypandoc.convert_text(
-                    md_content,
-                    "pdf",
-                    format="md",
-                    outputfile=pdf_file,
-                    extra_args=["--standalone"]
-                )
-            except Exception as e:
-                print(f"⚠️ PDF export failed: {e}")
-        else:
-            print("⚠️ Skipped PDF export (pdflatex not installed)")
+    # # --- Export PDF ---
+    # if "pdf" in formats:
+    #     pdf_file = os.path.join(output_dir, f"{base_name}.pdf")
+    #     if shutil.which("pdflatex"):
+    #         try:
+    #             pypandoc.convert_text(
+    #                 md_content,
+    #                 "pdf",
+    #                 format="md",
+    #                 outputfile=pdf_file,
+    #                 extra_args=["--standalone"]
+    #             )
+    #         except Exception as e:
+    #             print(f"⚠️ PDF export failed: {e}")
+    #     else:
+    #         print("⚠️ Skipped PDF export (pdflatex not installed)")
 
     print(f"✅ Exported to {output_dir} ({', '.join(formats)})")
