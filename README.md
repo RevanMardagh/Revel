@@ -64,7 +64,7 @@ Modifying settings should be fairly simple. You can press **show** to see/modify
 ### Export
 
 - You can export as 1 or more of these file types
-  - MD, TXT, HTML, DOCX, PDF (pdf doesnt work yet)
+  - MD, TXT, HTML, DOCX
 - They will be created in the folder you choose, in a sub folder with the `File Base Name` you set
 - If there already is a folder with the same name, "\_1" is appended to the folder name.
   The number is incremented if there are multiple duplicates
