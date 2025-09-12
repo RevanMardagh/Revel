@@ -21,7 +21,7 @@ def get_abuseipdb_scores(ips, api_key=None):
 
     abuse_scores = {}
     try:
-        abuse = AbuseIPDB(api_key=api_key, db_file=os.path.join(ROOT_DIR, "exports", "abuseipdb.json"))
+        abuse = AbuseIPDB(api_key=api_key, db_file=os.path.join(ROOT_DIR, "db", "abuseipdb.json"))
         abuse.add_ip_list(ips)
         abuse.check()
         db_data = abuse.get_db()

@@ -83,7 +83,7 @@ def export_logs_and_ai(
 
     # Read AI from temp.txt if not provided
     if not ai_text:
-        temp_file = os.path.join(ROOT_DIR, "exports", "temp.txt")
+        temp_file = os.path.join(ROOT_DIR, "db", "temp.txt")
         if os.path.exists(temp_file):
             try:
                 with open(temp_file, "r", encoding="utf-8") as f:
@@ -112,7 +112,7 @@ def export_logs_and_ai(
     # --- Export HTML ---
     if "html" in formats:
         html_file = os.path.join(output_dir, f"{base_name}.html")
-        css_file = os.path.join("exports", "template", "style.css")
+        css_file = os.path.join("db", "template", "style.css")
         try:
             pypandoc.convert_text(
                 md_content,
@@ -131,7 +131,7 @@ def export_logs_and_ai(
     # --- Export DOCX ---
     if "docx" in formats:
         docx_file = os.path.join(output_dir, f"{base_name}.docx")
-        reference_docx = os.path.join("exports", "template", "template.docx")
+        reference_docx = os.path.join("db", "template", "template.docx")
         try:
             pypandoc.convert_text(
                 md_content,
