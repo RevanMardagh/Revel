@@ -19,3 +19,4 @@ class LoadingDialog(QDialog):
         layout.addWidget(progress)
 
         self.setFixedSize(300, 120)
+

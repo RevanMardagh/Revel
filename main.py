@@ -5,19 +5,19 @@ from api.gemini import generate_ai_overview
 import threading
 from mylibs.settings import load_settings
 import os
-# --- AI callback ---
-def handle_ai_text(ai_text, log_stats, ip_stats, exports_page):
-    from PyQt6.QtCore import QTimer
-
-    # Thread-safe update to ExportsPage
-    def update_export():
-        exports_page.update_data(
-            log_stats=log_stats,
-            ip_stats=ip_stats,
-            ai_text=ai_text
-        )
-
-    QTimer.singleShot(0, update_export)
+# # --- AI callback ---
+# def handle_ai_text(ai_text, log_stats, ip_stats, exports_page):
+#     from PyQt6.QtCore import QTimer
+#
+#     # Thread-safe update to ExportsPage
+#     def update_export():
+#         exports_page.update_data(
+#             log_stats=log_stats,
+#             ip_stats=ip_stats,
+#             ai_text=ai_text
+#         )
+#
+#     QTimer.singleShot(0, update_export)
 
 
 
@@ -55,12 +55,12 @@ def on_file_selected(file_path, ai_page=None, ai_callback=None, exports_page=Non
             ai_text = generate_ai_overview(ip_stats, gemini_api_key)
             ai_page.update_text_signal.emit(ai_text)  # update GUI
 
-            if ai_callback:
-                ai_callback(ai_text, log_stats, ip_stats, exports_page=exports_page)
-
-                # Write AI text to file
-                with open(os.path.join("exports", "temp.txt"), "w", encoding="utf-8") as f:
-                    f.write(ai_text)
+            # if ai_callback:
+            #     ai_callback(ai_text, log_stats, ip_stats, exports_page=exports_page)
+            #
+            #     # Write AI text to file
+            #     with open(os.path.join("exports", "temp.txt"), "w", encoding="utf-8") as f:
+            #         f.write(ai_text)
 
         threading.Thread(target=run_ai, daemon=True).start()
     else:
@@ -75,14 +75,32 @@ def on_file_selected(file_path, ai_page=None, ai_callback=None, exports_page=Non
         "ip_list": ip_list
     }
 
+def parse_file(file_path):
+    parsed_data = parser(file_path)
+    log_stats, ip_stats = log_statistics(parsed_data)
 
+    if log_stats == -1:
+        return {"parsed_data": None, "log_stats": None, "ip_stats": None}
+
+    return {
+        "file_path": file_path,
+        "parsed_data": parsed_data,
+        "log_stats": log_stats,
+        "ip_stats": ip_stats,
+        "ip_list": [entry["remote_addr"] for entry in parsed_data]
+    }
 
 run_gui(
-    on_file_selected=lambda fp, ai_page=None, exports_page=None:
-        on_file_selected(
-            fp,
-            ai_page=ai_page,
-            ai_callback=handle_ai_text,
-            exports_page=exports_page
-        )
+    on_file_selected=parse_file   # parsing only
 )
+
+
+# run_gui(
+#     on_file_selected=lambda fp, ai_page=None, exports_page=None:
+#         on_file_selected(
+#             fp,
+#             ai_page=ai_page,
+#             ai_callback=handle_ai_text,
+#             exports_page=exports_page
+#         )
+# )
